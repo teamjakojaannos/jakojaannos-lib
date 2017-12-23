@@ -1,0 +1,10 @@
+[
+{
+  "modid": "jakojaannos-lib",
+  "name": "Team Jakojäännös Lib",
+  "description": "Common utility code used by Team Jakojäännös mods.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "authorList": ["Team Jakojäännös"]
+}
+]
