@@ -53,8 +53,6 @@ public abstract class ModMainBase<
             MinecraftForge.EVENT_BUS.register(items);
             items.initItems();
         }
-
-
     }
 
     public abstract void onInit(FMLInitializationEvent event);
@@ -121,19 +119,30 @@ public abstract class ModMainBase<
     private static final int ITEMS_INDEX = 2;
 
     private Class<TBlocks> getBlocksClass() {
-        // Shh, just let it happen
-        // noinspection unchecked
+        // noinspection unchecked (Shh, just let it happen)
         return (Class<TBlocks>) getActualTypeArguments()[BLOCKS_INDEX];
     }
 
     private Class<TItems> getItemsClass() {
-        // Shh, just let it happen
-        // noinspection unchecked
+        // noinspection unchecked (Shh, just let it happen)
         return (Class<TItems>) getActualTypeArguments()[ITEMS_INDEX];
     }
 
     private Type[] getActualTypeArguments() {
         // Umm... yeah. It might be better you just don't even ask.
+        // ...but if you did, all this line does is basically just getting an array of types specified in generic type
+        // parameters.
+        //
+        // 1. getClass() returns the Class of the calling subclass
+        // 2. getGenericSupertype() gets type token of this abstract base with generic type parameters filled in (This
+        //    works because subclass has those types explicitly defined, thus overcoming the type erasure). And
+        //    as we know for sure that generics are involved, we just cast the Type to ParameterizedType to get access
+        //    to that data.
+        // 3. Now we can use getActualTypeArguments to get type tokens describing what is filled to the generic type
+        //    parameters.
+        //
+        // Array we get contains type tokens to generic parameters in order they are defined. First at index zero being
+        // TModMain, first content class being TBlocks at index one, second TItems at two and so forth.
         return ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
     }
 }
