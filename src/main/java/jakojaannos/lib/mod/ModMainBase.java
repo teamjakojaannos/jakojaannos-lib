@@ -1,5 +1,6 @@
 package jakojaannos.lib.mod;
 
+import jakojaannos.lib.init.BiomesBase;
 import jakojaannos.lib.init.BlocksBase;
 import jakojaannos.lib.init.ContentBase;
 import jakojaannos.lib.init.ItemsBase;
@@ -18,15 +19,17 @@ import java.lang.reflect.*;
 /**
  * Base for creating the mod main class.
  * <p>
+ * Implementation uses concept of "Content" classes which are classes that facilitate registration and storage of static
+ * references (or {@link ObjectHolder ObjectHolders}) of content instances. For example, Block content -class handles
+ * block registration and is the place where mod should have @ObjectHolders for all its blocks. There is no need to
+ * create unneeded placeholder classes neither. For example, if mod doesn't add any new biomes, it's valid to just pass
+ * plain {@link BiomesBase} to {@link TBiomes} in class definition and you are set.
+ * <p>
  * Implementations must override event handlers for {@link #onInit(FMLPreInitializationEvent)},
  * {@link #onInit(FMLInitializationEvent)} and {@link #onInit(FMLPostInitializationEvent)},
  * annotate them with {@link Mod.EventHandler} and call base implementation (if the method base is not abstract).
  * Always declare subclasses final. Content class resolving from generic type arguments breaks if trying to inherit
  * further.
- * <p>
- * Implementation uses concept of "Content" classes which are classes that facilitate registration and storage of static
- * references (or {@link ObjectHolder ObjectHolders}) of content instances. For example, Block content -class handles
- * block registration and is the place where mod should have @ObjectHolders for all its blocks.
  * <p>
  * Note: I'm terribly sorry to everyone for all the black magic used. Necessary evil for eliminating unnecessary
  * boilerplate from mod mains/content classes in a convenient way.
@@ -34,7 +37,8 @@ import java.lang.reflect.*;
 public abstract class ModMainBase<
         TModMain extends ModMainBase,
         TBlocks extends BlocksBase,
-        TItems extends ItemsBase> {
+        TItems extends ItemsBase,
+        TBiomes extends BiomesBase> {
 
     private static final Logger LOGGER = LogManager.getLogger("jakojaannos-lib");
 
