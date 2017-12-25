@@ -27,15 +27,16 @@ public class BiomeBase extends Biome {
     /**
      * Gets the sea level override. Negative value means that world default will be used instead.
      */
-    public final int getSeaLevelOverride() {
+    public int getSeaLevelOverride() {
         return seaLevelOverride;
     }
 
     /**
      * Sets the sea level override. Set to negative value to use world default.
      */
-    public final void setSeaLevelOverride(int seaLevel) {
+    public BiomeBase setSeaLevelOverride(int seaLevel) {
         this.seaLevelOverride = seaLevel;
+        return this;
     }
 
     /**
@@ -48,8 +49,9 @@ public class BiomeBase extends Biome {
     /**
      * Sets the block used as water substitute for blocks below sea level
      */
-    public void setOceanBlock(IBlockState oceanBlock) {
+    public BiomeBase setOceanBlock(IBlockState oceanBlock) {
         this.oceanBlock = oceanBlock;
+        return this;
     }
 
     /**
@@ -62,8 +64,9 @@ public class BiomeBase extends Biome {
     /**
      * Sets the number of bedrock layers generated
      */
-    public void setBedrockDepth(int bedrockDepth) {
+    public BiomeBase setBedrockDepth(int bedrockDepth) {
         this.bedrockDepth = bedrockDepth;
+        return this;
     }
 
     /**
@@ -76,8 +79,9 @@ public class BiomeBase extends Biome {
     /**
      * Sets the block to use as stone substitute
      */
-    public void setStoneBlock(IBlockState stoneBlock) {
+    public BiomeBase setStoneBlock(IBlockState stoneBlock) {
         this.stoneBlock = stoneBlock;
+        return this;
     }
 
     /**
@@ -90,8 +94,9 @@ public class BiomeBase extends Biome {
     /**
      * Sets the filler block
      */
-    public void setFillerBlock(IBlockState fillerBlock) {
+    public BiomeBase setFillerBlock(IBlockState fillerBlock) {
         this.fillerBlock = fillerBlock;
+        return this;
     }
 
     /**
@@ -104,8 +109,9 @@ public class BiomeBase extends Biome {
     /**
      * Sets the top block
      */
-    public void setTopBlock(IBlockState topBlock) {
+    public BiomeBase setTopBlock(IBlockState topBlock) {
         this.topBlock = topBlock;
+        return this;
     }
 
     /**
@@ -118,8 +124,9 @@ public class BiomeBase extends Biome {
     /**
      * Sets the number of filler block layers to generate
      */
-    public void setFillerDepth(int fillerDepth) {
+    public BiomeBase setFillerDepth(int fillerDepth) {
         this.fillerDepth = fillerDepth;
+        return this;
     }
 
     /**
