@@ -147,7 +147,11 @@ public class BiomeBase extends Biome {
     }
 
     @Override
-    public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
+    public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int globalX, int globalZ, double noiseVal) {
+        // HACK: Vanilla has x<->z swapped, so do we
+        int x = globalZ & 15;
+        int z = globalX & 15;
+
         // Set bottom layer to bedrock
         primer.setBlockState(x, 0, z, BEDROCK);
 
