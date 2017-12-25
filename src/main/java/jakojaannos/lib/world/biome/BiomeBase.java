@@ -1,5 +1,6 @@
 package jakojaannos.lib.world.biome;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -160,15 +161,15 @@ public class BiomeBase extends Biome {
         int solidDepth = 0;
 
         // Replace blocks
-        for (int y = world.getSeaLevel(); y > 0; y--) {
+        for (int y = 255; y > 0; y--) {
 
-            final IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+            final IBlockState state = primer.getBlockState(x, y, z);
 
             // Keep replacing water blocks with air or water override block until we hit solid
             if (!hitSolid) {
-                if (state.getBlock() == Blocks.WATER) {
+                if (state.getMaterial() == Material.WATER) {
                     replaceWater(world, rand, primer, seaLevel, x, y, z, noiseVal);
-                } else if (state.getMaterial().isSolid()) {
+                } else if (state.getMaterial() != Material.AIR) {
                     hitSolid = true;
                 }
             }
@@ -181,7 +182,7 @@ public class BiomeBase extends Biome {
     }
 
     protected void replaceWater(World world, Random random, ChunkPrimer primer, int seaLevel, int x, int y, int z, double noiseVal) {
-        final IBlockState newState = y > seaLevel ? AIR : oceanBlock;
+        final IBlockState newState = y > seaLevel ? Blocks.AIR.getDefaultState() : oceanBlock;
 
         primer.setBlockState(x, y, z, newState);
     }
@@ -192,7 +193,7 @@ public class BiomeBase extends Biome {
         if (solidDepth == 0) {
             primer.setBlockState(x, y, z, topBlock);
         } else if (y <= random.nextInt(bedrockDepth)) {
-            primer.setBlockState(x, y, z, BEDROCK);
+            primer.setBlockState(x, y, z, Blocks.BEDROCK.getDefaultState());
         } else {
             primer.setBlockState(x, y, z, solidDepth >= fillerDepth ? stoneBlock : fillerBlock);
         }
