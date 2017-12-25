@@ -57,6 +57,11 @@ public abstract class ModMainBase<
             MinecraftForge.EVENT_BUS.register(items);
             items.initItems();
         }
+
+        if (biomes != null) {
+            MinecraftForge.EVENT_BUS.register(biomes);
+            biomes.initBiomes();
+        }
     }
 
     public abstract void onInit(FMLInitializationEvent event);
@@ -70,10 +75,12 @@ public abstract class ModMainBase<
 
     private final TBlocks blocks;
     private final TItems items;
+    private final TBiomes biomes;
 
     protected ModMainBase() {
         blocks = createContentInstance(getBlocksClass());
         items = createContentInstance(getItemsClass());
+        biomes = createContentInstance(getBiomesClass());
     }
 
 
@@ -121,6 +128,7 @@ public abstract class ModMainBase<
 
     private static final int BLOCKS_INDEX = 1;
     private static final int ITEMS_INDEX = 2;
+    private static final int BIOMES_INDEX = 3;
 
     private Class<TBlocks> getBlocksClass() {
         // noinspection unchecked (Shh, just let it happen)
@@ -130,6 +138,11 @@ public abstract class ModMainBase<
     private Class<TItems> getItemsClass() {
         // noinspection unchecked (Shh, just let it happen)
         return (Class<TItems>) getActualTypeArguments()[ITEMS_INDEX];
+    }
+
+    private Class<TBiomes> getBiomesClass() {
+        // noinspection unchecked (Shh, just let it happen)
+        return (Class<TBiomes>) getActualTypeArguments()[BIOMES_INDEX];
     }
 
     private Type[] getActualTypeArguments() {

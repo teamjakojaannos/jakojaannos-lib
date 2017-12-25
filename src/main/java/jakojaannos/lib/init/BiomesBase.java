@@ -14,7 +14,7 @@ import java.util.Map;
 public abstract class BiomesBase extends ContentBase {
     private final Map<String, Entry> biomes = new HashMap<>();
 
-    protected abstract void doRegister();
+    public abstract void initBiomes();
 
     protected void register(String key, int weight, BiomeManager.BiomeType type, Biome biome, BiomeDictionary.Type... types) {
         biomes.put(key, new Entry(biome, weight, type, types));

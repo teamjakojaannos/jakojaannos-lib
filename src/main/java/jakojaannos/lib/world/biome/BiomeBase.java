@@ -9,6 +9,9 @@ import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
+// TODO: Allow specifying top/filler separately for underwater blocks
+// TODO: Apply noiseVal to fillerDepth etc.
+
 /**
  * Adds some convenience features for allowing a bit more customized biomes.
  */
@@ -135,8 +138,6 @@ public class BiomeBase extends Biome {
         this.bedrockDepth = 5;
         this.seaLevelOverride = -1;
     }
-
-    // TODO: Apply noiseVal to fillerDepth etc.
 
     @Override
     public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
