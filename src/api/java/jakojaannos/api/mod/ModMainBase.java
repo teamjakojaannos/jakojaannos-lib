@@ -1,14 +1,11 @@
-package jakojaannos.lib.mod;
+package jakojaannos.api.mod;
 
-import jakojaannos.lib.init.BiomesBase;
-import jakojaannos.lib.init.BlocksBase;
-import jakojaannos.lib.init.ContentBase;
-import jakojaannos.lib.init.ItemsBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,25 +23,31 @@ import java.lang.reflect.*;
  * plain {@link BiomesBase} to {@link TBiomes} in class definition and you are set.
  * <p>
  * Implementations must override event handlers for {@link #onInit(FMLPreInitializationEvent)},
- * {@link #onInit(FMLInitializationEvent)} and {@link #onInit(FMLPostInitializationEvent)},
- * annotate them with {@link Mod.EventHandler} and call base implementation (if the method base is not abstract).
- * Always declare subclasses final. Content class resolving from generic type arguments breaks if trying to inherit
- * further.
+ * {@link #onInit(FMLPreInitializationEvent)}, {@link #onInit(FMLInitializationEvent)} and
+ * {@link #onInit(FMLPostInitializationEvent)}, annotate them with {@link Mod.EventHandler} and call base implementation
+ * (if the method base is not abstract, ofc). Always declare subclasses final. Content class resolving from generic type
+ * arguments breaks if trying to inherit further.
  * <p>
  * Note: I'm terribly sorry to everyone for all the black magic used. Necessary evil for eliminating unnecessary
  * boilerplate from mod mains/content classes in a convenient way.
  */
 public abstract class ModMainBase<
-        TModMain extends ModMainBase,
         TBlocks extends BlocksBase,
         TItems extends ItemsBase,
-        TBiomes extends BiomesBase> {
+        TBiomes extends BiomesBase,
+        TCommands extends CommandsBase> {
 
     private static final Logger LOGGER = LogManager.getLogger("jakojaannos-lib");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FML Events
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void onServerStarting(FMLServerStartingEvent event) {
+        if (commands != null) {
+            commands.doInitCommands(event);
+        }
+    }
 
     public void onInit(FMLPreInitializationEvent event) {
         // Register content instances and initialize content
@@ -76,11 +79,13 @@ public abstract class ModMainBase<
     private final TBlocks blocks;
     private final TItems items;
     private final TBiomes biomes;
+    private final TCommands commands;
 
     protected ModMainBase() {
         blocks = createContentInstance(getBlocksClass());
         items = createContentInstance(getItemsClass());
         biomes = createContentInstance(getBiomesClass());
+        commands = createContentInstance(getCommandsClass());
     }
 
 
@@ -89,7 +94,7 @@ public abstract class ModMainBase<
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Nullable
-    private <TContent extends ContentBase> TContent createContentInstance(Class<TContent> clazz) {
+    private <TContent> TContent createContentInstance(Class<TContent> clazz) {
         // Do not proceed if abstract class was specified
         if (Modifier.isAbstract(clazz.getModifiers())) {
             return null;
@@ -114,7 +119,9 @@ public abstract class ModMainBase<
         }
 
         // Set instance modid
-        instance.setModId(findModId());
+        if (instance instanceof ContentBase) {
+            ((ContentBase) instance).setModId(findModId());
+        }
 
         // Return the instance. I'm amazed if this line actually executes with all the reflection involved
         return instance;
@@ -126,9 +133,10 @@ public abstract class ModMainBase<
     }
 
 
-    private static final int BLOCKS_INDEX = 1;
-    private static final int ITEMS_INDEX = 2;
-    private static final int BIOMES_INDEX = 3;
+    private static final int BLOCKS_INDEX = 0;
+    private static final int ITEMS_INDEX = 1;
+    private static final int BIOMES_INDEX = 2;
+    private static final int COMMANDS_INDEX = 3;
 
     private Class<TBlocks> getBlocksClass() {
         // noinspection unchecked (Shh, just let it happen)
@@ -143,6 +151,11 @@ public abstract class ModMainBase<
     private Class<TBiomes> getBiomesClass() {
         // noinspection unchecked (Shh, just let it happen)
         return (Class<TBiomes>) getActualTypeArguments()[BIOMES_INDEX];
+    }
+
+    private Class<TCommands> getCommandsClass() {
+        // noinspection unchecked (Shh, just let it happen)
+        return (Class<TCommands>) getActualTypeArguments()[COMMANDS_INDEX];
     }
 
     private Type[] getActualTypeArguments() {

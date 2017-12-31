@@ -1,4 +1,4 @@
-package jakojaannos.lib.block;
+package jakojaannos.api.mod;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;

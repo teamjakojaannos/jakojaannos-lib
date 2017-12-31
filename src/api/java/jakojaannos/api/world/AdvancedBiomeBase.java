@@ -1,9 +1,8 @@
-package jakojaannos.lib.world.biome;
+package jakojaannos.api.world;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -16,7 +15,7 @@ import java.util.Random;
 /**
  * Adds some convenience features for allowing a bit more customized biomes.
  */
-public class BiomeBase extends Biome {
+public class AdvancedBiomeBase extends Biome {
     private int seaLevelOverride;
     private int bedrockDepth;
     private int fillerDepth;
@@ -35,7 +34,7 @@ public class BiomeBase extends Biome {
     /**
      * Sets the sea level override. Set to negative value to use world default.
      */
-    public BiomeBase setSeaLevelOverride(int seaLevel) {
+    public AdvancedBiomeBase setSeaLevelOverride(int seaLevel) {
         this.seaLevelOverride = seaLevel;
         return this;
     }
@@ -50,7 +49,7 @@ public class BiomeBase extends Biome {
     /**
      * Sets the block used as water substitute for blocks below sea level
      */
-    public BiomeBase setOceanBlock(IBlockState oceanBlock) {
+    public AdvancedBiomeBase setOceanBlock(IBlockState oceanBlock) {
         this.oceanBlock = oceanBlock;
         return this;
     }
@@ -65,7 +64,7 @@ public class BiomeBase extends Biome {
     /**
      * Sets the number of bedrock layers generated
      */
-    public BiomeBase setBedrockDepth(int bedrockDepth) {
+    public AdvancedBiomeBase setBedrockDepth(int bedrockDepth) {
         this.bedrockDepth = bedrockDepth;
         return this;
     }
@@ -80,7 +79,7 @@ public class BiomeBase extends Biome {
     /**
      * Sets the block to use as stone substitute
      */
-    public BiomeBase setStoneBlock(IBlockState stoneBlock) {
+    public AdvancedBiomeBase setStoneBlock(IBlockState stoneBlock) {
         this.stoneBlock = stoneBlock;
         return this;
     }
@@ -95,7 +94,7 @@ public class BiomeBase extends Biome {
     /**
      * Sets the filler block
      */
-    public BiomeBase setFillerBlock(IBlockState fillerBlock) {
+    public AdvancedBiomeBase setFillerBlock(IBlockState fillerBlock) {
         this.fillerBlock = fillerBlock;
         return this;
     }
@@ -110,7 +109,7 @@ public class BiomeBase extends Biome {
     /**
      * Sets the top block
      */
-    public BiomeBase setTopBlock(IBlockState topBlock) {
+    public AdvancedBiomeBase setTopBlock(IBlockState topBlock) {
         this.topBlock = topBlock;
         return this;
     }
@@ -125,7 +124,7 @@ public class BiomeBase extends Biome {
     /**
      * Sets the number of filler block layers to generate
      */
-    public BiomeBase setFillerDepth(int fillerDepth) {
+    public AdvancedBiomeBase setFillerDepth(int fillerDepth) {
         this.fillerDepth = fillerDepth;
         return this;
     }
@@ -138,7 +137,7 @@ public class BiomeBase extends Biome {
     }
 
 
-    protected BiomeBase(BiomeProperties properties) {
+    protected AdvancedBiomeBase(BiomeProperties properties) {
         super(properties);
         this.oceanBlock = WATER;
         this.stoneBlock = STONE;

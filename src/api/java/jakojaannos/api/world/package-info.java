@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package jakojaannos.lib.world.biome;
+package jakojaannos.api.world;
 
 import mcp.MethodsReturnNonnullByDefault;
 

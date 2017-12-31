@@ -1,4 +1,4 @@
-package jakojaannos.lib.init;
+package jakojaannos.api.mod;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;

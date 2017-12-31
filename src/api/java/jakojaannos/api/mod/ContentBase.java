@@ -1,4 +1,4 @@
-package jakojaannos.lib.init;
+package jakojaannos.api.mod;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +16,7 @@ public abstract class ContentBase {
     /**
      * INTERNAL USE, DO NOT CALL
      */
-    public void setModId(String modId) {
+    void setModId(String modId) {
         Preconditions.checkState(this.modId == null);
         this.modId = modId;
     }

@@ -1,7 +1,6 @@
-package jakojaannos.lib.init;
+package jakojaannos.api.mod;
 
 import com.google.common.base.Preconditions;
-import jakojaannos.lib.block.IBlock;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
