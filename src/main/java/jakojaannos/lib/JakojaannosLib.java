@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ModInfo.MODID, name = ModInfo.NAME, version = ModInfo.VERSION)
-public class JakojaannosLib extends ModMainBase<BlocksBase, ItemsBase, BiomesBase, CommandsBase> {
+public class JakojaannosLib extends ModMainBase<BlocksBase, ItemsBase, BiomesBase, CommandsBase, LootTablesBase> {
     private static final Logger LOGGER = LogManager.getLogger("jakojaannos-lib");
 
     @Override
