@@ -12,6 +12,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraftforge.common.config.Config.Comment;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -239,8 +240,7 @@ public class AdvancedBiomeBase extends Biome {
                     replaceWater(world, rand, primer, seaLevel, x, y, z, noiseVal);
                 } else if (state.getMaterial() != Material.AIR) {
                     hitSolid = true;
-                } else if (y <= fuzzySeaLevel) {
-                    underwater = true;
+                    underwater = y <= fuzzySeaLevel;
                 }
             }
 
@@ -295,10 +295,9 @@ public class AdvancedBiomeBase extends Biome {
         IBlockState[] lookup = new IBlockState[256];
 
         if (layers == null) {
-            for (int y = 0; y < 256; y++) {
-                if (y == 0) {
-                    lookup[y] = top;
-                } else if (y < fillerDepth) {
+            lookup[0] = top;
+            for (int y = 1; y < 256; y++) {
+                if (y <= fillerDepth) {
                     lookup[y] = filler;
                 } else {
                     lookup[y] = stoneBlock;
@@ -310,6 +309,7 @@ public class AdvancedBiomeBase extends Biome {
                 int i = 0;
                 while (y < 256 && i < layer.getDepth()) {
                     lookup[y] = layer.getBlock();
+                    i++;
                     y++;
                 }
             }
@@ -332,10 +332,10 @@ public class AdvancedBiomeBase extends Biome {
         public int seaLevelOverride = -1;
 
         @Comment("Y-level offset for switching between underwater and normal layers when near sea level")
-        public float seaLevelFuzzOffset = 3.0f;
+        public float seaLevelFuzzOffset = 0.0f;
 
         @Comment("Y-level fuzz scale for switching between underwater and normal layers when near sea level")
-        public float seaLevelFuzzScale = 3.0f;
+        public float seaLevelFuzzScale = 1.0f;
 
         @Comment("Number of bedrock layers to generate.")
         public int bedrockDepth = 5;
@@ -359,9 +359,9 @@ public class AdvancedBiomeBase extends Biome {
 
 
         @Comment("Layers to generate. These are generated in order they are defined, relative to the first solid block counting from sky towards bedrock")
-        public BlockLayer.Config[] layers = {};
+        public String[] layers = {};
 
         @Comment("Layers to use when below sea level")
-        public BlockLayer.Config[] underwaterLayers = {};
+        public String[] underwaterLayers = {};
     }
 }
