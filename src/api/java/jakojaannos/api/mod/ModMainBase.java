@@ -30,12 +30,15 @@ import java.lang.reflect.*;
  * <p>
  * Note: I'm terribly sorry to everyone for all the black magic used. Necessary evil for eliminating unnecessary
  * boilerplate from mod mains/content classes in a convenient way.
+ *
+ * TODO: Change discovery so that it can locate stuff higher from hierarchy and create subclasses with less generic params
  */
 public abstract class ModMainBase<
         TBlocks extends BlocksBase,
         TItems extends ItemsBase,
         TBiomes extends BiomesBase,
-        TCommands extends CommandsBase> {
+        TCommands extends CommandsBase,
+        TLoot extends LootTablesBase> {
 
     private static final Logger LOGGER = LogManager.getLogger("jakojaannos-lib");
 
@@ -80,12 +83,14 @@ public abstract class ModMainBase<
     private final TItems items;
     private final TBiomes biomes;
     private final TCommands commands;
+    private final TLoot loot;
 
     protected ModMainBase() {
         blocks = createContentInstance(getBlocksClass());
         items = createContentInstance(getItemsClass());
         biomes = createContentInstance(getBiomesClass());
         commands = createContentInstance(getCommandsClass());
+        loot = createContentInstance(getLootTablesClass());
     }
 
 
@@ -137,6 +142,7 @@ public abstract class ModMainBase<
     private static final int ITEMS_INDEX = 1;
     private static final int BIOMES_INDEX = 2;
     private static final int COMMANDS_INDEX = 3;
+    private static final int LOOT_INDEX = 4;
 
     private Class<TBlocks> getBlocksClass() {
         // noinspection unchecked (Shh, just let it happen)
@@ -156,6 +162,11 @@ public abstract class ModMainBase<
     private Class<TCommands> getCommandsClass() {
         // noinspection unchecked (Shh, just let it happen)
         return (Class<TCommands>) getActualTypeArguments()[COMMANDS_INDEX];
+    }
+
+    private Class<TLoot> getLootTablesClass() {
+        // noinspection unchecked (Shh, just let it happen)
+        return (Class<TLoot>) getActualTypeArguments()[LOOT_INDEX];
     }
 
     private Type[] getActualTypeArguments() {
