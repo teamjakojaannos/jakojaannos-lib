@@ -25,7 +25,8 @@ public abstract class AdvancedBiomeBase extends Biome {
     private IBlockState oceanBlock;
     private IBlockState stoneBlock;
 
-    private LayerSupplier layerSupplier;
+    private BlockLayer[] underwaterLayers;
+    private BlockLayer[] layers;
 
 
     /**
@@ -119,15 +120,17 @@ public abstract class AdvancedBiomeBase extends Biome {
         return seaLevelOverride < 0 ? world.getSeaLevel() : seaLevelOverride;
     }
 
-    public AdvancedBiomeBase setLayerSupplier(LayerSupplier supplier) {
-        this.layerSupplier = supplier;
+    public AdvancedBiomeBase setLayers(BlockLayer[] layers, BlockLayer[] underwaterLayers) {
+        this.layers = layers;
+        this.underwaterLayers = underwaterLayers;
         return this;
     }
 
 
     protected AdvancedBiomeBase(BiomeProperties properties) {
         super(properties);
-        this.layerSupplier = (b) -> new BlockLayer[0];
+        this.layers = new BlockLayer[0];
+        this.underwaterLayers = new BlockLayer[0];
 
         this.oceanBlock = WATER;
         this.stoneBlock = STONE;
@@ -217,10 +220,6 @@ public abstract class AdvancedBiomeBase extends Biome {
     }
 
     protected BlockLayer[] getLayers(boolean underwater) {
-        return layerSupplier.supply(underwater);
-    }
-
-    public interface LayerSupplier {
-        BlockLayer[] supply(boolean underwater);
+        return underwater ? underwaterLayers : layers;
     }
 }
