@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'java'
 
 
-version = "0.0.0"
+version = "0.1.0"
 group = "jakojaannos.jakojaannos-lib"
 archivesBaseName = "jakojaannos-lib"
 
@@ -63,16 +63,23 @@ processResources {
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
-jar {
-    manifest {
-        attributes 'FMLAT': 'jakojaannos-lib_at.cfg'
-    }
-}
 
 task apiJar(type: Jar, dependsOn: reobfJar) {
     destinationDir = libsDir
     appendix = "api"
     from sourceSets.api.output
+}
+
+
+jar {
+    manifest {
+        attributes 'FMLAT': 'jakojaannos-lib_at.cfg'
+    }
+
+    // Package API.jar to main jar
+    from(apiJar.archivePath.absolutePath) {
+        include '*'
+    }
 }
 
 build.dependsOn apiJar
