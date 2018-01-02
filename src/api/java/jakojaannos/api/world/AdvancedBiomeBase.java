@@ -193,15 +193,14 @@ public abstract class AdvancedBiomeBase extends Biome {
     protected void generateLookup(Random random, int solidY, int fuzzySeaLevel, int x, int z, double noiseVal, IBlockState[] lookup) {
         final boolean underwater = solidY <= fuzzySeaLevel;
         final BlockLayer[] layers = getLayers(underwater);
-        final int fuzzyBedrockDepth = bedrockDepth; // TODO: apply fuzz
 
         int y = 0;
         for (BlockLayer layer : layers) {
             int i = 0;
-            while (y < 256 && i < layer.getDepth()) {
+            while (y < solidY && i < layer.getDepth()) {
                 if (y == 0) {
                     lookup[y] = layer.getBlock();
-                } else if (y > random.nextInt(fuzzyBedrockDepth - solidY)) {
+                } else if (y > solidY - random.nextInt(bedrockDepth)) {
                     lookup[y] = Blocks.BEDROCK.getDefaultState();
                 } else {
                     lookup[y] = layer.getBlock();
@@ -213,8 +212,15 @@ public abstract class AdvancedBiomeBase extends Biome {
         }
 
         // Fill the rest of blocks with stone blocks
-        while (y < 256) {
-            lookup[y] = stoneBlock;
+        while (y < solidY) {
+            if (y == 0) {
+                lookup[y] = stoneBlock;
+            } else if (y > solidY - random.nextInt(bedrockDepth)) {
+                lookup[y] = Blocks.BEDROCK.getDefaultState();
+            } else {
+                lookup[y] = stoneBlock;
+            }
+
             y++;
         }
     }
