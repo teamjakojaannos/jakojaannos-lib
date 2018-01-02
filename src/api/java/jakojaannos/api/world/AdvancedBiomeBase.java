@@ -25,7 +25,7 @@ public abstract class AdvancedBiomeBase extends Biome {
     private IBlockState oceanBlock;
     private IBlockState stoneBlock;
 
-    private final LayerSupplier layerSupplier;
+    private LayerSupplier layerSupplier;
 
 
     /**
@@ -119,10 +119,15 @@ public abstract class AdvancedBiomeBase extends Biome {
         return seaLevelOverride < 0 ? world.getSeaLevel() : seaLevelOverride;
     }
 
+    public AdvancedBiomeBase setLayerSupplier(LayerSupplier supplier) {
+        this.layerSupplier = supplier;
+        return this;
+    }
 
-    protected AdvancedBiomeBase(BiomeProperties properties, LayerSupplier layerSupplier) {
+
+    protected AdvancedBiomeBase(BiomeProperties properties) {
         super(properties);
-        this.layerSupplier = layerSupplier;
+        this.layerSupplier = (b) -> new BlockLayer[0];
 
         this.oceanBlock = WATER;
         this.stoneBlock = STONE;
