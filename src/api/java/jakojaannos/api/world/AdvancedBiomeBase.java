@@ -25,6 +25,8 @@ public abstract class AdvancedBiomeBase extends Biome {
     private IBlockState oceanBlock;
     private IBlockState stoneBlock;
 
+    private final LayerSupplier layerSupplier;
+
 
     /**
      * Gets the sea level override. Negative value means that world default will be used instead.
@@ -118,11 +120,9 @@ public abstract class AdvancedBiomeBase extends Biome {
     }
 
 
-    public abstract BlockLayer[] getLayers(boolean underwater);
-
-
-    protected AdvancedBiomeBase(BiomeProperties properties) {
+    protected AdvancedBiomeBase(BiomeProperties properties, LayerSupplier layerSupplier) {
         super(properties);
+        this.layerSupplier = layerSupplier;
 
         this.oceanBlock = WATER;
         this.stoneBlock = STONE;
@@ -209,5 +209,13 @@ public abstract class AdvancedBiomeBase extends Biome {
             lookup[y] = stoneBlock;
             y++;
         }
+    }
+
+    protected BlockLayer[] getLayers(boolean underwater) {
+        return layerSupplier.supply(underwater);
+    }
+
+    public interface LayerSupplier {
+        BlockLayer[] supply(boolean underwater);
     }
 }
